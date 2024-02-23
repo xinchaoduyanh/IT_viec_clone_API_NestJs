@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import mongoose, { Model } from 'mongoose'
 import { genSaltSync, hashSync } from 'bcryptjs'
 import { CreateUserDto } from './dto/create-user.dto'
+import { UpdateUserDto } from './dto/update-user.dto'
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
@@ -28,13 +29,9 @@ export class UsersService {
     const user = await this.userModel.findOne({ _id: id })
     return user
   }
-  async update(id: string, createUserDto: CreateUserDto) {
-    const { email, password, name } = createUserDto
-    const user = await this.userModel.findOneAndUpdate(
-      { _id: id },
-      { email, password: this.hashPassword(password), name },
-      { new: true }
-    )
+  async update(updateUserDto: UpdateUserDto) {
+    const { email, _id, name } = updateUserDto
+    const user = await this.userModel.findOneAndUpdate({ _id: _id }, { email, name }, { new: true })
     return user
   }
 }

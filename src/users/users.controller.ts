@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Controller, Post, Body, Param, Get, Patch } from '@nestjs/common'
 import { UsersService } from './users.service'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 import { CreateUserDto } from './dto/create-user.dto'
+import { UpdateUserDto } from './dto/update-user.dto'
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -19,8 +21,8 @@ export class UsersController {
     return this.usersService.findOne(id)
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() CreateUserDto: CreateUserDto) {
-    return this.usersService.update(id, CreateUserDto)
+  @Patch()
+  update(@Body() UpdateUserDto: UpdateUserDto) {
+    return this.usersService.update(UpdateUserDto)
   }
 }
