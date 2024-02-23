@@ -34,4 +34,11 @@ export class UsersService {
     const user = await this.userModel.findOneAndUpdate({ _id: _id }, { email, name }, { new: true })
     return user
   }
+  remove(id: string) {
+    if (mongoose.Types.ObjectId.isValid(id) === false) {
+      // throw new Error('Invalid ID')
+      return 'not found user'
+    }
+    return this.userModel.deleteOne({ _id: id })
+  }
 }
