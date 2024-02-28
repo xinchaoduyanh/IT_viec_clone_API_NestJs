@@ -9,7 +9,7 @@ export class AuthService {
     if (user) {
       const isValid = this.usersService.isValidPassword(pass, user.password)
       if (isValid) {
-        return true
+        return user
       }
     }
     return null
