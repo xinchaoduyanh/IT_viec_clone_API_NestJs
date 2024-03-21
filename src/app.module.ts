@@ -7,12 +7,18 @@ import { UsersModule } from './users/users.module'
 import { AuthModule } from './auth/auth.module'
 // import { APP_GUARD } from '@nestjs/core'
 // import { JwtAuthGuard } from './auth/jwt-auth.guard'
+import { CompaniesModule } from './companies/companies.module'
+import softDelete from 'mongoose-delete'
 @Module({
   imports: [
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('DATABASE_URL')
+        uri: configService.get<string>('DATABASE_URL'),
+        connectionFactory: (connection) => {
+          connection.plugin(softDelete, { overrideMethods: true })
+          return connection
+        }
       }),
       inject: [ConfigService]
     }),
@@ -20,7 +26,8 @@ import { AuthModule } from './auth/auth.module'
       isGlobal: true
     }),
     UsersModule,
-    AuthModule
+    AuthModule,
+    CompaniesModule
   ],
   controllers: [AppController],
   providers: [
