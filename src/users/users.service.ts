@@ -25,7 +25,7 @@ export class UsersService {
   async findOne(id: string) {
     if (mongoose.Types.ObjectId.isValid(id) === false) {
       // throw new Error('Invalid ID')
-      return 'not found user'
+      return 'Invalid ID'
     }
     const user = await this.userModel.findOne({ _id: id })
     return user
