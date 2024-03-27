@@ -2,9 +2,11 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Patch,
-  Post
+  Post,
+  Query
   // ,Get,
   //  Post,
   //  Body,
@@ -34,5 +36,11 @@ export class CompaniesController {
   @Delete(':id')
   remove(@Param('id') id: string, @User() user: UserInterface) {
     return this.companiesService.remove(id, user)
+  }
+  @Get()
+  findAll(@Query() qs: string, @Query('page') page: string, @Query('limit') limit: string) {
+    console.log(qs)
+
+    return this.companiesService.findAll(qs, +page, +limit)
   }
 }
