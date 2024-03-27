@@ -8,6 +8,7 @@ import { CreateCompanyDto } from './dto/create-company.dto'
 import { UserInterface } from 'src/users/users.interface'
 import { UpdateCompanyDto } from './dto/update-company.dto'
 import { Types } from 'mongoose'
+
 @Injectable()
 export class CompaniesService {
   constructor(@InjectModel(Company.name) private companyModel: SoftDeleteModel<CompanyDocument>) {}
@@ -46,5 +47,25 @@ export class CompaniesService {
       }
     )
     return company
+  }
+  async remove(_id: string, user: UserInterface) {
+    console.log(user)
+
+    if (!Types.ObjectId.isValid(_id)) {
+      throw new BadRequestException('Invalid company ID')
+    }
+    await this.companyModel.findOneAndUpdate(
+      {
+        _id
+      },
+      {
+        deletedBy: {
+          _id: user._id,
+          email: user.email
+        },
+        deletedAt: Date.now()
+      }
+    )
+    return this.companyModel.softDelete({ _id })
   }
 }

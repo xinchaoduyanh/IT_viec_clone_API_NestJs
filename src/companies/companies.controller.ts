@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Param,
   Patch,
   Post
@@ -29,5 +30,9 @@ export class CompaniesController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCompanyDto: UpdateCompanyDto, @User() user: UserInterface) {
     return this.companiesService.update(updateCompanyDto, id, user)
+  }
+  @Delete(':id')
+  remove(@Param('id') id: string, @User() user: UserInterface) {
+    return this.companiesService.remove(id, user)
   }
 }
