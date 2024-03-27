@@ -8,7 +8,7 @@ import { AuthModule } from './auth/auth.module'
 // import { APP_GUARD } from '@nestjs/core'
 // import { JwtAuthGuard } from './auth/jwt-auth.guard'
 import { CompaniesModule } from './companies/companies.module'
-import softDelete from 'mongoose-delete'
+import { softDeletePlugin } from 'soft-delete-plugin-mongoose'
 @Module({
   imports: [
     MongooseModule.forRootAsync({
@@ -16,7 +16,7 @@ import softDelete from 'mongoose-delete'
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('DATABASE_URL'),
         connectionFactory: (connection) => {
-          connection.plugin(softDelete, { overrideMethods: true })
+          connection.plugin(softDeletePlugin)
           return connection
         }
       }),

@@ -16,7 +16,6 @@ import ms from 'ms'
         secret: configService.get<string>('JWT_ACCESS_TOKEN'),
         signOptions: { expiresIn: ms(configService.get<string>('JWT_EXPIRES')) }
       }),
-
       inject: [ConfigService]
     })
   ],
