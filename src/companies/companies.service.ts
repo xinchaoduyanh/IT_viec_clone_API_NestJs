@@ -5,12 +5,21 @@ import { InjectModel } from '@nestjs/mongoose'
 // import { UpdateCompanyDto } from './dto/update-company.dto'
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose'
 import { CreateCompanyDto } from './dto/create-company.dto'
+import { UserInterface } from 'src/users/users.interface'
 @Injectable()
 export class CompaniesService {
   constructor(@InjectModel(Company.name) private companyModel: SoftDeleteModel<CompanyDocument>) {}
-  create(createCompanyDto: CreateCompanyDto) {
+  create(createCompanyDto: CreateCompanyDto, user: UserInterface) {
     const { name, address, description } = createCompanyDto
-    const company = this.companyModel.create({ name, address, description })
+    const company = this.companyModel.create({
+      name,
+      address,
+      description,
+      createdBy: {
+        _id: user._id,
+        enmail: user.email
+      }
+    })
     return company
   }
 }
